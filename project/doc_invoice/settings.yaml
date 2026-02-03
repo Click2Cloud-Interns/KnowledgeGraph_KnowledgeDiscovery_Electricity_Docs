@@ -1,0 +1,68 @@
+encoding: utf-8
+
+models:
+  default_chat_model:
+    type: azure_openai_chat
+    model: ${AZURE_OPENAI_CHAT_DEPLOYMENT}
+    api_base: ${AZURE_OPENAI_ENDPOINT}
+    api_key: ${GRAPHRAG_API_KEY}
+    api_version: 2025-01-01-preview
+    max_retries: 10
+    request_timeout: 180.0
+
+  default_embedding_model:
+    type: azure_openai_embedding
+    model: ${AZURE_OPENAI_EMBEDDING_DEPLOYMENT}
+    api_base: ${AZURE_OPENAI_ENDPOINT}
+    api_key: ${GRAPHRAG_API_KEY}
+    api_version: 2024-12-01-preview
+    max_retries: 10
+
+input:
+  type: file
+  file_type: text
+  base_dir: input
+  file_encoding: utf-8
+  file_pattern: ".*\\.md"
+
+chunking:
+  type: tokens
+  size: 1200
+  overlap: 100
+  encoding_model: o200k_base
+
+cache:
+  type: file
+  base_dir: cache
+
+output_storage:
+  type: file
+  base_dir: output
+
+reporting:
+  type: file
+  base_dir: logs
+
+extract_graph:
+  entity_types:
+    - organization
+    - person
+    - geo
+    - event
+  max_gleanings: 1
+
+summarize_descriptions:
+  prompt: prompts/summarize_descriptions.txt
+  max_length: 500
+
+community_reports:
+  graph_prompt: prompts/community_report.txt
+  max_length: 2000
+  max_input_length: 8000
+
+cluster_graph:
+  max_cluster_size: 10
+
+snapshots:
+  graphml: true
+  raw_graph: false

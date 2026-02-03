@@ -1,0 +1,19 @@
+# Virtual Environment
+venv/
+
+# GraphRAG generated folders
+cache/
+output/
+logs/
+lancedb/
+
+# Python
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db
